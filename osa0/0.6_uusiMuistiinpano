@@ -1,0 +1,26 @@
+sequence Diagram
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+  // Browser sends a GET request to get spa page
+server-->>browser: HTML document
+  // Server gets the document
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+  // Browser sends a GET request to get styling
+server-->>browser: css file
+  // Server gets the css file
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+  // Browser sends a GET request to get spa.js JavaScript file
+server-->>browser: JavaScript file
+  // Server gets the JS file
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+  // Browser sends a GET request to get data.json file
+server-->>browser: [{content: "hello", date: "2024-06-06T02:13:21.796Z"},…]
+  // Server gets the json file
+
+browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+  // Browser sends a POST request to post a new note to the spa
+server-->>browser: {"message":"note created"}
+  // New note is created
