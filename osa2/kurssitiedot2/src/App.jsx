@@ -10,15 +10,15 @@ const Content = ({ parts }) => {
   return (
     <div>
       {parts.map(part =>
-        <Part key={part.id} part={part.name} exercises={part.exercises}/>
+        <Part key={part.id} part={part}/>
       )}
     </div>
   )
 }
 
-const Part = ({ part, exercises}) => {
+const Part = ({ part}) => {
   return (
-    <p>{part} {exercises}</p>
+    <p>{part.name} {part.exercises}</p>
   )
 }
 
