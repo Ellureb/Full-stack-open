@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -32,6 +34,10 @@ const App = () => {
           })
           .then(updatedPerson => {
             setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson))
+            setMessage(`Updated number of ${updatedPerson.name}`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
             setNewName('')
             setNewNumber('')
           })
@@ -46,6 +52,10 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -59,6 +69,10 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
+          setMessage(`Deleted ${person.name}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
         .catch(error => {
           alert(`The person '${person.name}' was already deleted from server`)
@@ -88,6 +102,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter value={filter} onChange={handleFilterChange} />
       <h3>Add a new contact</h3>
       <PersonForm 
