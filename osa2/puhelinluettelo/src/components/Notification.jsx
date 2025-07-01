@@ -3,8 +3,8 @@ const Notification = ({ message }) => {
         return null
     }
     return (
-        <div className="message">
-            {message}
+        <div className={message.type === 'error' ? 'error' : 'success'}>
+            {message.text}
         </div>
     )
 }

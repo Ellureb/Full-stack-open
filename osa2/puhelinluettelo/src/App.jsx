@@ -34,12 +34,22 @@ const App = () => {
           })
           .then(updatedPerson => {
             setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson))
-            setMessage(`Updated number of ${updatedPerson.name}`)
+            setMessage({ text: `Updated number of ${updatedPerson.name}`, type: 'success'})
             setTimeout(() => {
               setMessage(null)
             }, 5000)
             setNewName('')
             setNewNumber('')
+          })
+          .catch(error => {
+            setMessage({
+              text: `The person '${personExists.name}' was already deleted from server`,
+              type: 'error'
+            })
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
+            setPersons(persons.filter(p => p.id !== personExists.id))
           })
       }
     } else {
@@ -52,7 +62,7 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setMessage(`Added ${returnedPerson.name}`)
+          setMessage({ text: `Added ${returnedPerson.name}`, type: 'success'})
           setTimeout(() => {
             setMessage(null)
           }, 5000)
@@ -69,13 +79,19 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id))
-          setMessage(`Deleted ${person.name}`)
+          setMessage({ text: `Deleted ${person.name}`, type: 'success'})
           setTimeout(() => {
             setMessage(null)
           }, 5000)
         })
         .catch(error => {
-          alert(`The person '${person.name}' was already deleted from server`)
+          setMessage({
+            text: `The person '${person.name}' was already deleted from server`,
+            type: 'error'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           setPersons(persons.filter(p => p.id !== id))
         })
     }
