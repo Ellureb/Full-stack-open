@@ -58,6 +58,28 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
 })
 
+const generatedId = () => {
+    let id
+    do {
+        id = String(Math.floor(Math.random() * 1000000))
+    } while (persons.some(person => person.id === id))
+    
+    return id
+}
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    const person = {
+        id: generatedId(),
+        name: body.name,
+        number: body.number
+    }
+
+    persons = persons.concat(person)
+
+    res.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
