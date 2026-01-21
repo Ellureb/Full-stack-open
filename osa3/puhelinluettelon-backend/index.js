@@ -15,6 +15,7 @@ morgan.token('body', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
+// teinkin tehtävän 3.18 jo aiemmassa commitissa huomaamattani :-)
 app.get('/info', (req, res) => {
     Person.countDocuments({}).then(count => {
         const currentTime = new Date()
@@ -32,6 +33,7 @@ app.get('/api/persons', (req, res) => {
     })
 })
 
+// teinkin tehtävän 3.18 jo aiemmassa commitissa huomaamattani :-)
 app.get('/api/persons/:id', (req, res) => {
     Person.findById(req.params.id)
       .then(person => {
