@@ -9,11 +9,13 @@ Tehtävät on jaettu osien mukaan kansioon, esim.
       0.5_SinglePageApp
       0.6_UusiMuistiinpano  
     osa1
-      xx
-      xx
-      xx
+      anekdootit
+      kurssitiedot
+      ...
     osa2
-    ...
+      ...
+      ...
+      ...
 jne.  
 
 Kiitos!
