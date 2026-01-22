@@ -15,7 +15,6 @@ morgan.token('body', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-// teinkin tehtävän 3.18 jo aiemmassa commitissa huomaamattani :-)
 app.get('/info', (req, res) => {
     Person.countDocuments({}).then(count => {
         const currentTime = new Date()
@@ -33,7 +32,6 @@ app.get('/api/persons', (req, res) => {
     })
 })
 
-// teinkin tehtävän 3.18 jo aiemmassa commitissa huomaamattani :-)
 app.get('/api/persons/:id', (req, res) => {
     Person.findById(req.params.id)
       .then(person => {
@@ -54,14 +52,8 @@ app.delete('/api/persons/:id', (req, res, next) => {
       .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
-
-    if (!body.name || !body.number) {
-        return res.status(400).json({
-            error: 'name and number required'
-        })
-    }
 
     /*if (persons.find(person => person.name === body.name)) {
         return res.status(400).json({
@@ -74,9 +66,11 @@ app.post('/api/persons', (req, res) => {
         number: body.number,
     })
 
-    person.save().then(savedPerson => {
+    person.save()
+      .then(savedPerson => {
         res.json(savedPerson)
-    })
+      })
+      .catch(error => next(error))
 })
 
 const unknownEndpoint = (req, res) => {
@@ -90,6 +84,8 @@ const errorHandler = (error, req, res, next) => {
 
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).json({ error: error.message })
     }
 
     next(error)
