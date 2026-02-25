@@ -74,6 +74,40 @@ test('empty likes is zero likes', async () => {
     assert.strictEqual(response.body.likes, 0)
 })
 
+test('blog without title is not added', async() => {
+    const newBlog = {
+        author: 'Hilla Malanca',
+        url: 'www.hillamalanca.com',
+        likes: 2209
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
+test('blog without url is not added', async() => {
+    const newBlog = {
+        title: 'Luimu-Leilan ja Kiito-Unskin seikkailut',
+        author: 'Leila, Unski',
+        likes: 1111
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
