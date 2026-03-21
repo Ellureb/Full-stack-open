@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [newUrl, setNewUrl] = useState('')
 
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -31,7 +33,7 @@ const App = () => {
     }
   }, [])
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
       title: newTitle,
@@ -39,14 +41,23 @@ const App = () => {
       url: newUrl,
     }
 
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setNewTitle('')
-        setNewAuthor('')
-        setNewUrl('')
-      })
+    try {
+      const returnedBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(returnedBlog))
+      setNewTitle('')
+      setNewAuthor('')
+      setNewUrl('')
+
+      setMessage(`A new blog added: ${returnedBlog.title} by ${returnedBlog.author || 'unknown author'}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (error) {
+      setErrorMessage(`Error adding blog: ${error.response?.data?.error || 'unknown error'}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const handleLogin = async event => {
@@ -62,8 +73,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch {
-      setErrorMessage('wrong credentials')
+    } catch (error) {
+      setErrorMessage(`Error logging in: ${error.response?.data?.error || 'unknown error'}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -145,6 +156,8 @@ const App = () => {
   return (
     <div>
       <h1>Blogs App</h1>
+      <Notification message={errorMessage} type="error" />
+      <Notification message={message} type="success" />
 
       {!user && loginForm()}
       {user && (
