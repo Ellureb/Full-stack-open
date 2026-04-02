@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -127,8 +128,8 @@ const App = () => {
   )
 
   const blogForm = () => (
-    <>
-      <h2>Add blog</h2>
+    <Togglable buttonLabel="add blog">
+      <h2>New blog</h2>
       <form onSubmit={addBlog}>
         <div>
           <label>
@@ -150,7 +151,7 @@ const App = () => {
         </div>
         <button type='submit'>save</button>
       </form>
-    </>
+    </Togglable>
   )
 
   return (
