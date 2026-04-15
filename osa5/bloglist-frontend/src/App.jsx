@@ -113,16 +113,21 @@ const App = () => {
     </>
   )
 
-  const blogList = () => (
-    <>
-      <h2>Bloglist</h2>
-      <ul>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLikeClick={() => likeBlog(blog)}/>
-        )}
-      </ul>
-    </>
-  )
+  const blogList = () => {
+
+    return (
+      <>
+        <h2>Bloglist</h2>
+        <ul>
+          {[...blogs]
+            .sort((a, b) => b.likes - a.likes)
+            .map(blog =>
+            <Blog key={blog.id} blog={blog} handleLikeClick={() => likeBlog(blog)}/>
+          )}
+        </ul>
+      </>
+    )
+  }
 
   const blogForm = () => (
     <Togglable buttonLabel="add blog">
