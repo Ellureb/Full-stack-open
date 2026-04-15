@@ -58,6 +58,13 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
   }
 
+  const removeBlog = async (blogObject) => {
+    if (window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}`)) {
+      await blogService.remove(blogObject)
+      setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+    }
+  }
+
   const handleLogin = async event => {
     event.preventDefault()
     
@@ -122,7 +129,12 @@ const App = () => {
           {[...blogs]
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
-            <Blog key={blog.id} blog={blog} handleLikeClick={() => likeBlog(blog)}/>
+            <Blog 
+              key={blog.id}
+              blog={blog}
+              handleLikeClick={() => likeBlog(blog)}
+              handleRemove={() => removeBlog(blog)}
+            />
           )}
         </ul>
       </>

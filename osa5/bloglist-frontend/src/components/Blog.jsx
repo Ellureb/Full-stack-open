@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog, handleLikeClick }) => {
+const Blog = ({ blog, handleLikeClick, handleRemove }) => {
   const [showInfo, setShowInfo] = useState(false)
 
   return (
@@ -20,6 +20,9 @@ const Blog = ({ blog, handleLikeClick }) => {
           </div>
           <div>
             added by: {blog.user.name}
+          </div>
+          <div>
+            <button onClick={handleRemove}>remove</button>
           </div>
         </div>
       )}
